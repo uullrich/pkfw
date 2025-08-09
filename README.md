@@ -81,7 +81,7 @@ npm run dev
 ### Frontend (Dashboard)
 
 - Widgets für beliebige Städte erstellen (z. B. Berlin, Hamburg, Paris)
-- Live-Wetter pro Widget (Auto-Refresh alle 60s)
+- Live-Wetter pro Widget (Auto-Refresh Intervall ist über `.env` einstellbar)
 - Widgets löschen
 - Keine Authentifizierung
 
@@ -118,7 +118,7 @@ Beispiele:
 - Wetter-Service:
   - `geocoding-api.open-meteo.com` → lat/lon aus Stadtname
   - `api.open-meteo.com` → aktuelle Wetterdaten
-  - `TTLCache` (Map-basiert) für 5-Minuten-Caching
+  - `TTLCache` (Map-basiert) für Caching
 - Entkopplung: Widgets-Endpunkte und Wetter-Endpunkt sind getrennt
 
 ## 🔒 Hinweise & Best Practices
@@ -127,8 +127,9 @@ Beispiele:
 - Fehlerbehandlung: Fastify-Sensible (`res.badRequest`, `res.notFound`)
 - CORS: Standardkonfiguration für lokale Entwicklung
 - Konfiguration: `.env` Dateien, keine Secrets commiten
+- Caching Klasse: Wurde nur zur Demonstration selbst entwickelt
 - Scaling: Für mehrere Instanzen Cache durch Redis ersetzen
-- Tests: Optional Jest + Supertest (nicht enthalten)
+- Tests sind nicht enthalten (z.B. Jest, Supertest, Cucumber)
 
 ## ✅ Nächste Schritte
 
@@ -137,5 +138,4 @@ Beispiele:
 - Docker-Compose für MongoDB/Apps
 - Rate-Limiting am Backend
 - Optional: Persistenter Cache (Redis) statt In-Memory
-
-Viel Erfolg!
+- OpenAPI File erstellen
