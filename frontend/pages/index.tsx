@@ -2,6 +2,7 @@ import { useState } from 'react';
 import useSWR from 'swr';
 import { api } from '@utils/api';
 import WidgetCard from '@components/WidgetCard';
+import { AxiosError, HttpStatusCode } from 'axios';
 
 type Widget = {
   _id: string;
@@ -18,9 +19,19 @@ export default function Home() {
   async function addWidget(e: React.FormEvent) {
     e.preventDefault();
     if (!location.trim()) return;
-    await api.post('/widgets', { location: location.trim() });
-    setLocation('');
-    mutate();
+    try {
+      await api.post('/widgets', { location: location.trim() });
+      setLocation('');
+      mutate();
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response?.status === HttpStatusCode.Conflict) {
+        alert('Widget already exists!');
+        return;
+      }
+
+      alert('Unknown error');
+    }
   }
 
   async function deleteWidget(id: string) {

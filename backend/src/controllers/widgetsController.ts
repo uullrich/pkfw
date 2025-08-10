@@ -1,4 +1,5 @@
 import Widget, { WidgetDoc } from '../models/Widget';
+import { normalizeLocationKey } from '../utils/normalize';
 
 /**
  * Returns all widgets sorted by newest first.
@@ -17,8 +18,10 @@ export async function listWidgets(): Promise<WidgetDoc[]> {
  * @returns Created widget from the database
  */
 export async function createWidget(location: string): Promise<WidgetDoc> {
-  const normalized = location.trim();
-  const created = await Widget.create({ location: normalized });
+  const created = await Widget.create({
+    location: location.trim(),
+    locationKey: normalizeLocationKey(location),
+  });
   return { ...created.toObject(), _id: created._id.toString() };
 }
 

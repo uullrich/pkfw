@@ -20,10 +20,18 @@ const widgetsRoutes: FastifyPluginAsync = async (app) => {
       const prettyError = z.prettifyError(parsed.error);
       return res.badRequest(prettyError);
     }
+
     const { location } = parsed.data;
-    const widget = await createWidget(location);
-    res.code(201);
-    return widget;
+    try {
+      const widget = await createWidget(location);
+      res.code(201);
+      return widget;
+    } catch (error) {
+      const err = error as { code: number };
+      if (err.code === 11000) {
+        res.conflict('Location already exists');
+      }
+    }
   });
 
   // DELETE /widgets/:id
@@ -36,10 +44,12 @@ const widgetsRoutes: FastifyPluginAsync = async (app) => {
     if (!parsed.success) {
       return res.badRequest('Invalid id');
     }
+
     const deleted = await deleteWidgetById(parsed.data.id);
     if (!deleted) {
       return res.notFound('Widget not found');
     }
+
     return { ok: true };
   });
 };
