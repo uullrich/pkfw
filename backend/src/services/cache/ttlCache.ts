@@ -18,11 +18,11 @@ export class TTLCache<T> {
     return entry.value;
   }
 
-  set(key: string, value: T) {
+  set(key: string, value: T): void {
     this.store.set(key, { value, expiresAt: Date.now() + this.ttlMs });
   }
 
-  has(key: string) {
+  has(key: string): boolean {
     const entry = this.store.get(key);
     if (!entry) return false;
 
@@ -34,7 +34,7 @@ export class TTLCache<T> {
     return true;
   }
 
-  clear() {
+  clear(): void {
     this.store.clear();
   }
 }
