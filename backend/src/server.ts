@@ -3,6 +3,7 @@ import cors from '@fastify/cors';
 import sensible from '@fastify/sensible';
 import { connectDB } from './utils/db';
 import widgetsRoutes from './routes/widgets';
+import weatherRoutes from './routes/weather';
 import healthRoutes from './routes/health';
 import dotenv from 'dotenv';
 
@@ -24,6 +25,7 @@ async function start() {
     // Routes
     await app.register(healthRoutes, { prefix: '/health' });
     await app.register(widgetsRoutes);
+    await app.register(weatherRoutes);
 
     // DB
     await connectDB(process.env.MONGODB_URI || 'mongodb://localhost:27017/widgets');
