@@ -18,7 +18,8 @@ const widgetsRoutes: FastifyPluginAsync = async (app) => {
   app.post('/widgets', async (req, res) => {
     const parsed = createBodySchema.safeParse(req.body);
     if (!parsed.success) {
-      return res.badRequest(parsed.error.errors.map((e) => e.message).join(', '));
+      const prettyError = z.prettifyError(parsed.error);
+      return res.badRequest(prettyError);
     }
     const { location } = parsed.data;
     const widget = await createWidget(location);
