@@ -2,15 +2,19 @@ type Entry<T> = { value: T; expiresAt: number };
 
 export class TTLCache<T> {
   private store = new Map<string, Entry<T>>();
+
   constructor(private ttlMs: number) {}
 
   get(key: string): T | undefined {
     const entry = this.store.get(key);
+
     if (!entry) return undefined;
+
     if (Date.now() > entry.expiresAt) {
       this.store.delete(key);
       return;
     }
+
     return entry.value;
   }
 
@@ -19,7 +23,15 @@ export class TTLCache<T> {
   }
 
   has(key: string) {
-    return this.get(key) !== undefined;
+    const entry = this.store.get(key);
+    if (!entry) return false;
+
+    if (Date.now() > entry.expiresAt) {
+      this.store.delete(key);
+      return false;
+    }
+
+    return true;
   }
 
   clear() {
