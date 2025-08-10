@@ -2,6 +2,8 @@ import Widget, { WidgetDoc } from '../models/Widget';
 
 /**
  * Returns all widgets sorted by newest first.
+ *
+ * @returns List of all widgets
  */
 export async function listWidgets(): Promise<WidgetDoc[]> {
   const widgets = await Widget.find().sort({ createdAt: -1 }).lean();
@@ -10,6 +12,9 @@ export async function listWidgets(): Promise<WidgetDoc[]> {
 
 /**
  * Creates a new widget for the given location.
+ *
+ * @param location Given location
+ * @returns Created widget from the database
  */
 export async function createWidget(location: string): Promise<WidgetDoc> {
   const normalized = location.trim();
@@ -18,7 +23,10 @@ export async function createWidget(location: string): Promise<WidgetDoc> {
 }
 
 /**
- * Deletes a widget by MongoDB _id. Returns true if a document was deleted.
+ * Deletes a widget by MongoDB _id.
+ *
+ * @param id Widget identifier
+ * @returns true if a document was deleted
  */
 export async function deleteWidgetById(id: string): Promise<boolean> {
   const res = await Widget.findByIdAndDelete(id);
